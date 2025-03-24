@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Price Calculator</title>
+    <style>
+        /* Resetting some default styles */
+        body, h2, label {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            color: #fff;
+        }
+        h2 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        label {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 8px;
+            text-align: left;
+            color: #fff;
+        }
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border: 1px solid #fff;
+            border-radius: 8px;
+            box-sizing: border-box;
+            background-color: #fff;
+            color: #333;
+            transition: border-color 0.3s ease;
+        }
+        input:focus {
+            border-color: #ff7e5f;
+            outline: none;
+        }
+        .error {
+            color: #e74c3c;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        #result {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2d6a4f;
+            margin-top: 15px;
+        }
+        .btn {
+            padding: 12px 25px;
+            background-color: #fff;
+            color: #ff7e5f;
+            font-size: 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #ff7e5f;
+            color: white;
+        }
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+                width: 90%;
+            }
+            h2 {
+                font-size: 22px;
+            }
+            input {
+                font-size: 14px;
+            }
+            .btn {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Dynamic Price Calculator</h2>
+
+        <label for="fee">Unit Price:</label>
+        <input type="text" id="fee" placeholder="Enter Unit Price" oninput="calculateResult()">
+        
+        <label for="count">Quantity:</label>
+        <input type="text" id="count" placeholder="Enter Quantity" oninput="calculateResult()">
+        
+        <label for="discount">Discount:</label>
+        <input type="text" id="discount" placeholder="Enter Discount" oninput="calculateResult()">
+        
+        <div id="error" class="error"></div>
+        <div id="result"></div>
+
+        <button class="btn" onclick="calculateResult()">Calculate</button>
+    </div>
+
+    <script>
+        function calculateResult() {
+            // Get the input values
+            const fee = parseFloat(document.getElementById('fee').value);
+            const count = parseFloat(document.getElementById('count').value);
+            const discount = parseFloat(document.getElementById('discount').value);
+            
+            // Get the result element and error element
+            const resultElement = document.getElementById('result');
+            const errorElement = document.getElementById('error');
+            
+            // Clear any previous error messages
+            errorElement.textContent = '';
+
+            // Check if the inputs are valid numbers
+            if (isNaN(fee) || isNaN(count) || isNaN(discount)) {
+                resultElement.textContent = '';
+                errorElement.textContent = 'Please enter valid numbers for all fields.';
+                return;
+            }
+
+            // Ensure quantity is not negative
+            if (count < 0) {
+                resultElement.textContent = '';
+                errorElement.textContent = 'Quantity cannot be negative.';
+                return;
+            }
+
+            // Calculate the result
+            const totalPrice = (count * fee) - discount;
+
+            // Ensure total price after discount is not negative
+            if (totalPrice < 0) {
+                resultElement.textContent = '';
+                errorElement.textContent = 'Total price after discount cannot be negative.';
+                return;
+            }
+
+            // Display the result
+            resultElement.textContent = `Total Price after Discount: ${totalPrice.toFixed(2)}`;
+        }
+    </script>
+
+</body>
+</html>
